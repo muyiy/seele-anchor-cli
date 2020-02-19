@@ -1,0 +1,33 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc"]
+    },
+    "source": {
+        "include": [
+          "./src"
+        ],
+        "includePattern": ".js$",
+        "excludePattern": "(node_modules/|docs)"
+    },
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "favicon": "./doc/_icons/s.png",
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": true,
+        "useLongnameInNav": false,
+        "showInheritedInNav": true,
+        "favicon": "./doc/_icons/s.png"
+    },
+    "opts": {
+        "destination": "./doc/html-jsdoc",
+        "encoding": "utf8",
+        "private": true,
+        "recurse": true,
+        "tutorials": "./doc/md-tutorials/",
+        "readme": "./doc/readme.md",
+        "template": "./node_modules/foodoc/template"
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "seele-anchor-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.json --fix",
+    "doc": "./node_modules/.bin/jsdoc --configure ./doc/.foodoc.jsdoc.json"
+  },
+  "bin": {
+    "anc": "./cli.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "seele-contract-core": "^1.0.5"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "foodoc": "0.0.9",
+    "jsdoc": "^3.6.3",
+    "mocha": "^7.0.1"
+  }
+}
