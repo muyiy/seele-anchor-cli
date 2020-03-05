@@ -1,6 +1,6 @@
-# Creator
+# Create
 
-- [x] Install anchor
+- [x] Install
 
 ```bash
 npm i seeleanchor
@@ -8,51 +8,25 @@ anc -v # --version
 anc -h # --help
 ```
 
-- [x] Initialize project
+- [x] Using
 
 ```bash
+# 1. Initiate project
 anc init -n mysubchain
-# cd .subchain/mysubchain
-```
-
-- [ ] Configuration
-
-```bash
-# configure the conf.json
-anc fill # Fill hashes
-```
-
-- [x] Compile & Deploy
-
-```bash
-anc make      # compile & creates config
-anc make -c   # compile & creates config
-anc make -d   # deploy
+cd .subchain/mysubchain
+# 2. Enter the deposit amounts
+# 3. Call to fill the hashes
+anc fill      # Fill hashes
+# 4. Compile & Deploy & export
 anc make -cd  # compile and deploy
+anc show -e
+# 5. Start node
+./node start subchain -c bft.json
 ```
 
-- [ ] Start subchain node
 
-```bash
-# Use the config created with anc
-./node start subchain -c nodeSubchain.json
-```
-
-- [ ] Control
-
-```bash
-anc freeze
-anc unfreeze
-```
 
 # Speculating
-
-- [ ] Link
-
-```bash
-anc link    # Verify node
-anc link -w # Create config
-```
 
 - [ ] Show
 
@@ -66,27 +40,28 @@ anc show -a # --all
 
 # User
 
-- [ ] Keys
+- [x] Keys
 
 ```bash
 anc keys -s 1 # --shard
-```
-
-- [ ] Trade
-
-```bash
-anc in  -o        # request verifier privilege
-anc in  -s 100    # enter money or first time as normal user
-anc in  -s 100 -o # enter and request verifier privilege
-anc out -o        # cancel verifier privilege
-anc out -s 100    # exit money, keeping privilege
-anc out -s 100 -o # exit and cancel verifier privilege
 ```
 
 - [ ] Transact
 
 ```bash
 anc send --to 0x... --amount 100 # to and amount
+```
+
+- [ ] Trade
+
+```bash
+anc trade in  -a 100     # enter money and
+anc trade in  -a 100 -o  # enter and request verifier privilege
+anc trade out -a 100     # exit money, keeping privilege
+anc trade out -o         # cancel verifier privilege, refund all
+anc trade fee -a 100     # get all
+anc trade                # show current status
+anc trade out            # early exits
 ```
 
 - [ ] Challenge
@@ -105,3 +80,14 @@ anc keep
 anc keep -p # push task to crontab
 anc keep -d # drop task from crontab
 ```
+
+# Creator
+
+- [ ] Control
+
+```bash
+anc freeze
+# anc unfreeze
+```
+
+$$\int_\Omega \nabla u \cdot \nabla v~dx = \int_\Omega fv~dx$$

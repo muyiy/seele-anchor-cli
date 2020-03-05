@@ -4,7 +4,7 @@
 
 #### controller
   - Initialize
-    - [ ] keys: generate subchain and mainNet key pairs
+    - [x] keys: generate subchain and mainNet key pairs
       - stemsdk: generate keypairs
     - [x] init: initiate config and solidity
     - [ ] fill: fill the hashes before deploy

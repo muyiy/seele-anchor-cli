@@ -1,0 +1,103 @@
+{
+  "compiler": {
+    "version": "0.4.24"
+  },
+  "shard": {
+    "1": "http://localhost:8037",
+    "2": "http://localhost:8038",
+    "3": "http://localhost:8039",
+    "4": "http://localhost:8036"
+  },
+  "transactions": {
+    "limit": 60000000,
+    "depth": 1,
+    "privateKey": "0xd345ed9cdfe3fc27a0382c5dbcaeec17836343a75e00cac37a81660714af8260",
+    "fromAddress": "0x55a03a606f8b1b9627c6e988806818fbc4544711",
+    "print": true
+  },
+  "addressBook": {
+  },
+  "constructors": {
+    "StemRootchain.sol": [
+      [
+        {
+          "name": "_subchainName",
+          "type": "bytes32"
+        },
+        {
+          "name": "_genesisInfo",
+          "type": "bytes32[]"
+        },
+        {
+          "name": "_staticNodes",
+          "type": "bytes32[]"
+        },
+        {
+          "name": "_creatorDeposit",
+          "type": "uint256"
+        },
+        {
+          "name": "_ops",
+          "type": "address[]"
+        },
+        {
+          "name": "_opsDeposits",
+          "type": "uint256[]"
+        },
+        {
+          "name": "_refundAccounts",
+          "type": "address[]"
+        }
+      ],
+      [
+        "0x68656c6c6f636861696e207375626f",
+        [
+          "0x7ee8671aeb65a2b1e4750ac9957a4c0be1c9a8139d754180e5e0e1589240d682",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        [],
+        700,
+        [
+          "0x5e3B33cCb95c4b4B5C72CA84552b6C3123a9b77F",
+          "0xd779EA8024b7fa2f37b6E3765d10998EC9535d36",
+          "0x84DB7AACDC9019F211AF45554d59681C90DCe904",
+          "0xdF855B0343CE1120c902C3298A4a7096B901F206"
+        ],
+        [
+          "",
+          "",
+          100,
+          200
+        ],
+        [
+          "0x0000000000000000000000000000000000000000",
+          "0x0000000000000000000000000000000000000000",
+          "0xb0eaf030c1b3f8a71ef47c867ca70566634e7501",
+          "0x06b23aaa47629aaeb242308a504ce9409647c831"
+        ]
+      ],
+      1000
+    ]
+  },
+  "subchain": {
+    "node": "http://localhost:8031",
+    "self": {
+      "private":"0xf63e55aeabf87d4d3cbc435b5202d443961cf90eb93c188c0fc2b317cf6aa8f2",
+      "address":"0x2C7B2b736fE51883609b7b28e4cc75DB72257431",
+      "address1":"0x5e3B33cCb95c4b4B5C72CA84552b6C3123a9b77F",
+      "address3":"0xc7bb0a994264214f277f6a5e088d752e197493a1"
+    },
+    "mint": {
+      "private":"0xe2b57aeb63987b3465a85ff16a7017ec2a4ea5901e25875f86e808a995aa09eb",
+      "address1":"0x5e3B33cCb95c4b4B5C72CA84552b6C3123a9b77F"
+    },
+    "melt": {
+      "private":"0xb0d3a9b2652d66ef1afd4a400390aafbc49f0e4b6f6970e380b823d5234561b9",
+      "address1":"0xd779EA8024b7fa2f37b6E3765d10998EC9535d36"
+    },
+    "roll": {
+      "private":"0x8f3b5103a73be75e26766e108375f2a7c7c16947597f894cad08ebef51187fc9",
+      "address1":"0x84DB7AACDC9019F211AF45554d59681C90DCe904"
+    }
+  }
+}
