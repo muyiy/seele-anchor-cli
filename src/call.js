@@ -3,6 +3,14 @@ const {getAbi, getNode, getConf} = require('./conf')
 const Web3 = require('web3')
 const web3 = new Web3()
 
+async function oneAccount(root, pro, account){
+  var sub = await contract(root);
+  var bal = await call(pro, sub.getUserBalance(account));
+  console.log({
+    account: account,
+    balance: bal['0']
+  });
+}
 
 async function allAccounts(root, pro){
   var sub = await contract(root);
@@ -14,6 +22,63 @@ async function allAccounts(root, pro){
     arr[opr] = bal['0']
   }
   console.log(arr);
+}
+
+async function exitAccounts(root, pro){
+  return new Promise(async function(resolve, reject) {
+    try {
+      var abi = await getAbi(root);
+      var subchain = new seele.contract(null, abi)
+      var accountsByte = subchain.getExitAccounts()
+      var accountsCall = await call(pro, accountsByte)
+      // console.log(accountsCall);
+      var accountsList = accountsCall[0]
+      var accountsInfo = []
+      for ( var a in accountsList ) {
+        var amount = await call(pro, subchain.getExitAmount(accountsList[a]))
+        var type = await call(pro, subchain.getExitType(accountsList[a]))
+        var block = await call(pro, subchain.getExitBlockNum(accountsList[a]))
+        // var type = await call(pro, subchain.getExitType(accountsList[a]))
+        type[0] ? type = 1 : type = 0
+        accountsInfo[a] = {
+          Address: accountsList[a],
+          Amount: parseInt(amount[0]),
+          Block: parseInt(block[0]),
+          Type: type
+        }
+      }
+      resolve(accountsInfo)
+    } catch (e) {
+    }
+  });
+}
+
+async function depoAccounts(root, pro){
+  return new Promise(async function(resolve, reject) {
+    try {
+      var abi = await getAbi(root);
+      var subchain = new seele.contract(null, abi)
+      var accountsByte = subchain.getDepositAccounts()
+      var accountsCall = await call(pro, accountsByte)
+      // console.log(accountsCall);
+      var accountsList = accountsCall[0]
+      var accountsInfo = []
+      for ( var a in accountsList ) {
+        var amount = await call(pro, subchain.getDepositAmount(accountsList[a]))
+        var type = await call(pro, subchain.getDepositType(accountsList[a]))
+        var block = await call(pro, subchain.getDepositBlockNum(accountsList[a]))
+        type[0] ? type = 1 : type = 0
+        accountsInfo[a] = {
+          Address: accountsList[a],
+          Amount: parseInt(amount[0]),
+          Block: parseInt(block[0]),
+          Type: type
+        }
+      }
+      resolve(accountsInfo)
+    } catch (e) {
+    }
+  });
 }
 
 async function contract(root) {
@@ -50,9 +115,9 @@ async function status(root, pro){
     subchain.getTotalDeposit(),
     subchain.getCreatorDeposit(),
     subchain.getTotalBalance(),
-    subchain.getTotalFee(),
+    subchain.getTotalFee()
     // subchain.getStaticNodes(),
-    subchain.getDepositAccounts()
+    // subchain.getDepositAccounts()
   ];
 
   var node = await getNode(pro);
@@ -145,9 +210,20 @@ async function relay(root, pro){
 
 }
 
+async function getOwner(root, pro){
+  var sub = await contract(root);
+  var own = await call(pro, sub.getOwner());
+  return own["0"]
+  // console.log(own["0"]);
+}
+
 module.exports = {
+  getOwner: getOwner,
+  oneAccount: oneAccount,
   status: status,
   challenge: challenge,
   relay: relay,
-  allAccounts: allAccounts
+  allAccounts: allAccounts,
+  depoAccounts: depoAccounts,
+  exitAccounts: exitAccounts
 }

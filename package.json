@@ -4,24 +4,55 @@
   "description": "",
   "main": "cli.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "testb": "bash test/flow.sh",
+    "test": "./node_modules/.bin/mocha",
+    "bash": "bash ./test/scriptTest.sh",
     "lint": "./node_modules/.bin/eslint -c .eslintrc.json --fix",
-    "doc": "./node_modules/.bin/jsdoc --configure ./doc/.foodoc.jsdoc.json"
+    "doc": "./node_modules/.bin/jsdoc --configure ./doc/.foodoc.jsdoc.json",
+    "test:init": "./test/init.sh",
+    "test:work": "./test/work.sh"
   },
   "bin": {
-    "anc": "./cli.js"
+    "anc": "./anc.js",
+    "snc": "./test/node/snc.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "seele-contract-core": "^1.0.5"
+    "data-store": "^4.0.3",
+    "node-cron": "^2.0.3",
+    "seele-contract-core": "file:../seele-contract-core",
+    "seele-sdk-javascript": "file:../seele-sdk-javascript",
+    "seele-stemsdk-javascript": "file:../seele-stemsdk-javascript",
+    "terminal-kit": "^1.35.2",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
+    "command-line-test": "^1.0.10",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "foodoc": "0.0.9",
     "jsdoc": "^3.6.3",
     "mocha": "^7.0.1"
+  },
+  "mocha": {
+    "diff": true,
+    "extension": [
+      "js"
+    ],
+    "spec": "test/*.test.js",
+    "opts": false,
+    "package": "./package.json",
+    "reporter": "spec",
+    "slow": 75,
+    "timeout": 1000000,
+    "ui": "bdd",
+    "watch-files": [
+      "test/*.test.js"
+    ],
+    "watch-ignore": [
+      "lib/vendor"
+    ]
   }
 }

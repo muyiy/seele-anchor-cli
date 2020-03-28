@@ -1,7 +1,10 @@
 const {getConf, getNode, setConf, getAbi} = require('./conf')
+const {depoAccounts, exitAccounts} = require('./call')
 const seele = require('seele-sdk-javascript');
 const stem = require('seele-stemsdk-javascript');
 const term = require( 'terminal-kit' ).terminal;
+const {send} = require('./send')
+const RLP = require("rlp")
 
 /**
  * fillhashes - fill constructor
@@ -9,19 +12,29 @@ const term = require( 'terminal-kit' ).terminal;
  * @param  {type} pro description
  * @returns {type}     description
  */
-async function fillhashes(pro){
+async function fillhashes(){
+  const {getConf, list, setConf} = require('./conf')
+  const stem = require('seele-stemsdk-javascript');
+  var pro = await list()
   var conf = await getConf(pro)
-  const node = await getNode(pro)
-  const rpc = new seele.rpc(node)
+
+  const rpc = new stem.rpc(conf.subchain.node)
   const opadr = conf.constructors['StemRootchain.sol'][1][4]
   const opbal = conf.constructors['StemRootchain.sol'][1][5]
-  var result = await rpc.subGen(opadr.join(','), opbal.join(','))
-  // console.log(result);
-  conf.constructors['StemRootchain.sol'][1][1] = [
-    result.balanceTreeRoot,
-    result.txTreeRoot
-  ]
-  await setConf(pro, conf);
+
+  Promise.all([
+    rpc.getTxTreeRoot(0),
+    rpc.getBalanceTreeRoot(0)
+  ])
+  .then(async (result)=>{
+    if (result[0].error == undefined && result[1].error == undefined ) {
+      conf.constructors['StemRootchain.sol'][1][1] = result
+      await setConf(pro, conf);
+    } else {
+      console.error(result[0].error);
+      console.error(result[1].error);
+    }
+  })
 }
 
 /**
@@ -33,66 +46,98 @@ async function fillhashes(pro){
  * @returns {type}          description
  */
 async function stemrequest(root, pro, argv){
-  const dep = argv.d
-  const abi = await getAbi(root);
-  const stm = new seele.contract(null, abi);
-  const conf = await getConf(pro)
-  const node = await getNode(pro)
-  const rpc = new seele.rpc(node)
-  const from = conf.transactions.fromAddress
-  const to = conf.addressBook["StemRootchain.sol"]
-  const initTx = seele.signature.initTxn(from, to, 0)
-  initTx.AccountNonce = await rpc.getAccountNonce(from, "", -1)
-
-
-  const account = conf.subchain.self.address
-  const amount = argv.amount
-  var result
-
-  if ( argv._.includes('out') && amount > 0 ) {
-    // result = stm.removeExitRequest()
-    argv.o ? result = stm.operatorExitRequest(account) : result = stm.userExitRequest(account, amount)
-  } else if ( argv._.includes('out') && amount == 0 ) {
-    // result = stm.execOperatorExit()
-    // result = stm.execUserExit()
-  } else if ( argv._.includes('in') ) {
-    // result = stm.removeDepositRequest()
-    argv.o ? result = stm.addOperatorRequest(account, from) : result = stm.userDepositRequest(account, from)
-    initTx.Amount = amount
-  } else if ( argv._.includes('fee') ) {
-    result = stm.feeExit(account, amount)
-  } else {
-    const stm = new stem.rpc(conf.subchain.node)
-    const slebal = await rpc.getBalance(from, "", -1)
-    const nonce = await rpc.getAccountNonce(from, "", -1)
-    // const bt = await stm.getDepositAccounts()
-    // const dp = await rpc.call(to, bt.byteCode, -1)
-    const stmbal = 0
-    // const stmbal = await stm.getBalance(account, "", -1)
-    console.log({
-      sle:{
-        Balance: slebal.Balance,
-        Account: slebal.Account,
-        Nonce: nonce
-      },
-      stm:{
-        Balance:stmbal
+  return new Promise(async function(resolve, reject) {
+    try {
+      const {getConf, getNode, setConf, getAbi} = require('./conf')
+      const seele = require('seele-sdk-javascript');
+      const abi = await getAbi(root);
+      const stm = new seele.contract(null, abi);
+      const conf = await getConf(pro)
+      const node = await getNode(pro)
+      const rpc = new seele.rpc(node)
+      var dep
+      argv.d!=null?dep = argv.d :dep= conf.transactions.depth;
+      var pri = conf.transactions.privateKey
+      var from = conf.transactions.fromAddress
+      var account = conf.subchain.self.address
+      if (argv.p != undefined && argv.subaddress != undefined){
+        pri = argv.p
+        from = seele.key.addof(pri)
+        account = argv.subaddress
       }
-    });
-    return "no transaction"
-  }
+      console.log(from);
+      const to = conf.addressBook["StemRootchain.sol"]
+      const initTx = seele.signature.initTxn(from, to, 0)
+      initTx.AccountNonce = await rpc.getAccountNonce(from, "", -1)
+      initTx.AccountNonce==0?initTx.AccountNonce=1:initTx.AccountNonce=initTx.AccountNonce;
 
-  initTx.Payload = result.byteCode
-  const gas = await rpc.estimateGas({Data: initTx})
-  initTx.GasLimit = gas
-  console.log(initTx);
-  // initTx.GasLimit = 1000000
-  const pri = conf.transactions.privateKey
-  argv.n != undefined ? initTx.AccountNonce = argv.n : console.log();
-  const signTx = seele.signature.signTxn(pri, initTx)
-  console.log(signTx);
-  const txresult = await mustsend(signTx, node, dep)
-  console.log(txresult);
+      const amount = argv.amount
+      var result
+
+      if ( argv._.includes('out') ) {
+        // result = stm.removeExitRequest()
+        if ( argv.o ) {
+          result = stm.operatorExitRequest(account)
+          initTx.Amount = 0
+        } else {
+          result = stm.userExitRequest(account, amount)
+          init.Amount = 1;
+        }
+        // result = stm.execOperatorExit()
+        // result = stm.execUserExit()
+      } else if ( argv._.includes('in') ) {
+        // result = stm.removeDepositRequest()
+        if ( argv.o ) {
+          result = stm.addOperatorRequest(account, from)
+        } else {
+          result = stm.userDepositRequest(account, from)
+        }
+        initTx.Amount = amount
+      } else if ( argv._.includes('fee') ) {
+        result = stm.feeExit(account, amount)
+      } else {
+        argv.address != undefined? from = argv.address: from = from;
+        const stm = new stem.rpc(conf.subchain.node)
+        const slebal = await rpc.getBalance(from, "", -1)
+        const nonce = await rpc.getAccountNonce(from, "", -1)
+        // const bt = await stm.getDepositAccounts()
+        // const dp = await rpc.call(to, bt.byteCode, -1)
+        const stmbal = 0
+        // const stmbal = await stm.getBalance(account, "", -1)
+        console.log({
+          sle:{
+            Balance: slebal.Balance,
+            Account: slebal.Account,
+            Nonce: nonce
+          },
+          stm:{
+            Balance:stmbal
+          }
+        });
+        return "no transaction"
+      }
+
+      initTx.Payload = result.byteCode
+      const gas = await rpc.estimateGas({Data: initTx})
+      // initTx.GasLimit = gas
+      // console.log(initTx);
+      initTx.GasLimit = 6000000
+
+      argv.n != undefined ? initTx.AccountNonce = argv.n : console.log();
+      const signTx = seele.signature.signTxn(pri, initTx)
+      console.log(signTx);
+      mustsend(signTx, node, dep)
+      .then((d)=>{
+        resolve(d)
+      })
+      .catch((e)=>{
+        reject(e)
+      })
+    } catch (e) {
+      reject(e)
+    }
+
+  });
 }
 
 /**
@@ -102,26 +147,38 @@ async function stemrequest(root, pro, argv){
  * @param  {type} argv description
  * @returns {type}      description
  */
-async function adtx(pro, argv){
-  const conf = await getConf(pro);
-  const node = await getNode(pro);
-  const rpc = new seele.rpc(node);
-  var pri, to, result
-  argv.f!=undefined? pri = argv.f: pri = conf.transactions.privateKey;
-  const from = seele.key.addof(pri);
-  argv.t!=undefined? to = argv.t: to = from;
-  var initTx = seele.signature.initTxn(from, to, argv.a);
-  initTx.Payload = argv.p;
-  initTx.AccountNonce = await rpc.getAccountNonce(from, "", -1);
-  const gas = await rpc.estimateGas({Data: initTx});
-  initTx.GasPrice = argv.g;
-  initTx.GasLimit = argv.l;
-  initTx.Timestamp = argv.i;
-  argv.n!=undefined? initTx.AccountNonce = argv.n:initTx.AccountNonce;
-  const signTx = seele.signature.signTxn(pri, initTx);
+async function adtx(argv){
+  return new Promise(async function(resolve, reject) {
+    try {
+      const {getConf, getNode, setConf, getAbi, list} = require('./conf')
+      const seele = require('seele-sdk-javascript');
+      const term = require('terminal-kit').terminal;
+      const focus = await list()
+      const conf = await getConf(focus);
+      const node = await getNode(focus);
+      const rpc = new seele.rpc(node);
+      var pri, to, result
+      argv.f!=undefined? pri = argv.f: pri = conf.transactions.privateKey;
+      const from = seele.key.addof(pri);
+      argv.t!=undefined? to = argv.t: to = from;
+      var initTx = seele.signature.initTxn(from, to, argv.a);
+      initTx.Payload = argv.p;
+      initTx.AccountNonce = await rpc.getAccountNonce(from, "", -1);
+      const gas = await rpc.estimateGas({Data: initTx});
+      initTx.GasPrice = argv.g;
+      initTx.GasLimit = argv.l;
+      initTx.Timestamp = argv.i;
+      argv.n!=undefined? initTx.AccountNonce = argv.n:initTx.AccountNonce;
+      const signTx = seele.signature.signTxn(pri, initTx);
 
-  console.log(signTx);
-  argv.s? result: result = await mustsend(signTx, node, argv.d);
+      console.log(signTx);
+      argv.s? result: result = await mustsend(signTx, node, argv.d);
+      console.log("adtx result:", result);
+      resolve(result)
+    } catch (e) {
+      reject(e)
+    }
+  });
 }
 
 /**
@@ -203,16 +260,20 @@ async function challenge(root, pro){
  * payable amount = self.blockSubmissionBond from StemCreation.sol
  * @returns {type}  description
  */
-async function keep(root, pro){
+async function keep(root){
   // 1. Relay block
   // 2. Get transactions
   // 3. Send transaction
+  // 4. Remove exit and deposit requests
   // get contract
+
+  const {getConf, getNode, setConf, getAbi, list} = require('./conf')
+  const pro = await list(null,null)
   const abi = await getAbi(root);
   const stm = new seele.contract(null, abi);
   var action, shouldReverse, shouldSubmit
 
-  // get the nodes
+  // get rpcs
   const cnf = await getConf(pro);
   const adr = cnf.addressBook['StemRootchain.sol'];
   var stemip = cnf.subchain.node;
@@ -220,65 +281,100 @@ async function keep(root, pro){
   var stmrpc = new stem.rpc(stemip);
   var slerpc = new seele.rpc(seeleip);
 
-  // var heightCall = stm.getLastConfirmedChildBlockNumber()
+  // get heights
+  var heightByte = stm.getNextChildBlockNum()
+  var heightCall = await slerpc.call(adr, heightByte.byteCode, -1)
+  const Web3 = require('web3')
+  const web3 = new Web3()
+  var height = Number.parseInt(web3.eth.abi.decodeParameters(heightByte.methodInfo.outputs, heightCall.result)[0]);
+  var info = await stmrpc.getInfo()
+  console.log(`height is: ${info.CurrentBlockHeight}/${height} (${info.BlockAge}s ago)`);
 
+
+  // get hashes
+  // height = info.CurrentBlockHeight
+  // console.log(height);
   // var d = await Promise.all([
-  //   slerpc.call(adr, heightCall.byteCode, -1),
-  //   stmrpc.getBalanceTreeRoot(),
-  //   stmrpc.getTransactionTreeRoot(),
-  //   stmrpc.getUpdateAccounts(),
-  //   stmrpc.getUpdateBalances(),
-  //   stmrcp.getFee()
+  //   stmrpc.getBalanceTreeRoot(height),
+  //   stmrpc.getTxTreeRoot(height),
+  //   stmrpc.getUpdatedAccountInfo(height)
+  //   // stmrcp.getFee()
   // ])
-  //
-  // {
-  //   "subchain": {
-  //     "address": "0xDA856cA3DDB8C791A153bf1e25C6Bda4f1e45eE5",
-  //     "private": "0xc025e4378d54da29a196246ee9e91576460065f4b0fd04a0d9707dfe801fe029"
-  //   },
-  //   "mainchain": {
-  //     "shard": 1,
-  //     "address": "0x6bc038c1dd610cdca463d5b1a8b6e553597ec001",
-  //     "private": "0x63932f6d4cf2d8f5e501d429d38530781d842e48851e987ce8adba7322c4116d"
-  //   }
-  // }
-  // {
-  //   "subchain": {
-  //     "address": "0x29f5F41A70e9CB52aA6B40beDFDc05dCe1E02196",
-  //     "private": "0xbc8814611ff0986a37f138328f0df9c8c5d470ea7d1eb80fc47480c73e9935c0"
-  //   },
-  //   "mainchain": {
-  //     "shard": 1,
-  //     "address": "0x17af21a7c95f6b5b89a3101b9c84d87dd5496b21",
-  //     "private": "0x62c213e65ca8eb5105f553aeca10e5fddaf5c9f146c36df52ff8fc68aa068be2"
-  //   }
-  // }
-
-  var height = 1000
-  var balroot = "0x0000000000000000000000000000000000000000000000000000000000000002"
-  var txnroot = "0x0000000000000000000000000000000000000000000000000000000000000001"
-  var accounts = [
-    "0x84DB7AACDC9019F211AF45554d59681C90DCe904",
-    "0xdF855B0343CE1120c902C3298A4a7096B901F206"
+  var d = [
+    "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "0xba415692ba15a69fcff976a782aabd84f7bdcb71fad9a601de85a8f809ff151a",
+    1
   ]
-  var balances = [
-    150,
-    140
-  ]
-  var fee = 5
 
-  const code = stm.submitBlock(height, balroot, txnroot, accounts, balances, fee)
-  const result = await employ(pro,1,code.byteCode);
-  console.log(result);
+  if ( d[0].error == undefined && d[1].error == undefined && d[2].error == undefined && info.CurrentBlockHeight>=height ) {
+    // Decode fee, balances, accounts
+    // var balances = RLP.decode(Buffer.from(d[2]["balances"], "base64"))
+    // balances = balances.map((buf)=>{return parseInt("0x"+buf.toString("hex")) })
+    // var accounts = RLP.decode(Buffer.from(d[2]["updated accounts"], "base64"))
+    // accounts = accounts.map((buf)=>{return "0x"+buf.toString("hex")})
+    var fee = 0
 
-  // if ( shouldReverse ) {
-  //   // action = stm.reverseBlock() //[blkNum]
-  // } else if ( shouldSubmit ) {
-  //   // action = stm.submitBlock() //[...]
-  // } else {
-  //
-  // }
+    // submit block
+    // console.log(height, d[0], d[1], accounts, balances, fee);
+    // const code = stm.submitBlock(height, d[0], d[1], accounts, balances, fee)
+    const code = stm.submitBlock(height, d[0], d[1], [], [], fee)
+    const result = await employ(pro,1,code.byteCode, null);
+    console.log(result);
 
+    // getinfo and send transactions
+    const depAccounts = await depoAccounts(root, pro)
+    const exiAccounts = await exitAccounts(root, pro)
+    var maxdep = 0
+    var maxexi = 0
+    var delay = 20
+
+    for ( var a of depAccounts ) {
+      maxdep <= a.Block ? maxdep = a.Block : maxdep = maxdep
+      // console.log(a.Block);
+    }
+
+    for ( var a of exiAccounts ) {
+      maxexi <= a.Block ? maxexi = a.Block : maxexi = maxexi
+      // console.log(a.Block);
+    }
+
+    console.log("dep height:", maxdep);
+    console.log("exi height:", maxexi);
+
+    const send = require("./send").send
+
+    for ( var acc of depAccounts ) {
+      const argv = {
+        t: acc.Address,
+        a: acc.Amount,
+        o: acc.Type,
+        h: acc.Block,
+        f: 'mint',
+        stop: true
+      }
+      console.log(argv);
+      await send(argv, pro)
+    }
+    for ( var acc of exiAccounts ) {
+      const argv = {
+        t: acc.Address,
+        a: acc.Amount,
+        o: acc.Type,
+        h: acc.Block,
+        f: 'melt',
+        stop: true
+      }
+      console.log(argv);
+      await send(argv, pro)
+    }
+  } else {
+    if (Number.parseInt(info.CurrentBlockHeight) < Number.parseInt(height)) {
+      console.log("keep not yet");
+    } else {
+      console.log("keep not work", d);
+    }
+    // return
+  }
 }
 
 /**
@@ -289,7 +385,7 @@ async function keep(root, pro){
  * @param  {type} payload description
  * @returns {type}         description
  */
-async function employ(pro, amount, payload){
+async function employ(pro, amount, payload, nonce){
   return new Promise(async function(resolve, reject) {
     try {
       const cnf = await getConf(pro);
@@ -301,7 +397,8 @@ async function employ(pro, amount, payload){
       const rpc = new seele.rpc(seeleip);
       var initTx = seele.signature.initTxn(pub, adr, amount);
       initTx.GasLimit = cnf.transactions.limit;
-      initTx.AccountNonce = await rpc.getAccountNonce(pub, "", -1);
+      nonce!=null?initTx.AccountNonce=nonce:initTx.AccountNonce = await rpc.getAccountNonce(pub, "", -1);
+      initTx.AccountNonce==0?initTx.AccountNonce=1:initTx.AccountNonce=initTx.AccountNonce;
       initTx.Payload = payload
       const signTx = seele.signature.signTxn(pri, initTx);
       console.log(signTx);
@@ -354,7 +451,7 @@ async function mustsend(tx, node, depth){
           else if (JSON.stringify(add).includes('exists')) {add='exists'}
           else if (JSON.stringify(add).includes('duplicate')) {add='exists'}
           else if (JSON.stringify(add).includes('nonce is too small')) {add='nonce err'}
-          else { add = add.slice(0, 10)}
+          else { add = add.slice(0, 50)}
 
 
           term()
@@ -369,8 +466,10 @@ async function mustsend(tx, node, depth){
           .green(`\nrc contract:`).cyan(` ${con}\n`).eraseLineAfter()
 
           if (txh.status=='block' && dep!='_' && dep >= depth) {
+            resolve('block')
             clearInterval(done);
           } else if (typeof add == 'object' && JSON.stringify(add).includes('nonce is too small')) {
+            resolve('nonce too small')
             clearInterval(done);
           } else {}
         })
@@ -379,8 +478,6 @@ async function mustsend(tx, node, depth){
       console.error(e);
       reject(e)
     }
-
-    resolve(true)
   });
 }
 
@@ -389,5 +486,6 @@ module.exports = {
   fillHashes: fillhashes,
   stemrequest: stemrequest,
   adtx: adtx,
-  keep: keep
+  keep: keep,
+  mustsend: mustsend
 }

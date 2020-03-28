@@ -1,12 +1,12 @@
 {
-	"ECRecovery.sol": "0xda8051f7b42d78504ea41893944b3a36fb7f0032",
-	"Merkle.sol": "0xd9192cacb38d4835c9a1b24930c9d437e86b0012",
-	"RLP.sol": "0x9dee85465bced51d2c4fed440305549190850012",
-	"RLPEncoding.sol": "0xa7923faa28d9863407c50034d66d9a87e3140002",
-	"SafeMath.sol": "0xee4d5b60e3222ef6ca79456ce3358b434e130022",
-	"StemCore.sol": "0x2db8205b6f2836c6c8d5be597fadc7cda4070022",
-	"StemChallenge.sol": "0x71244b68697742607b7d35ebac00e8da0ddf0002",
-	"StemRelay.sol": "0xf29ece046a07c05ac33f40152a244e14f3a90002",
-	"StemCreation.sol": "0x427acd79696e54b0b2528efb1757dbde4a3f0022",
-	"StemRootchain.sol": "0xd511ea2de16e89349692e9485ca49c813f020002"
+	"ECRecovery.sol": "0x4ab48f4adc726a8bb294d0616707f569b60b0022",
+	"Merkle.sol": "0xc9bc093ad69304c79ed895a008fb484c301d0012",
+	"RLP.sol": "0x8d5079ad3696abc6e7b5e04225ae374683ed0022",
+	"RLPEncoding.sol": "0x6d532cf711aaba7173cd88bb2d59c1ea503d0022",
+	"SafeMath.sol": "0xb55a816035bd62849ccaf6b4dfe4ad073ff80022",
+	"StemCore.sol": "0xbe5fc9b9221a5a709be4acff7a233f48bc230022",
+	"StemChallenge.sol": "0xf65467d91b477fd641c3ce0f5d3622e5a41b0012",
+	"StemRelay.sol": "0x211312a369a29fd9795c45b335be6ed53b0b0032",
+	"StemCreation.sol": "0xc45bbdfe927e686eba504e6da7d11bb0dd2b0002",
+	"StemRootchain.sol": "0x42af923a40925f39db78f8067666aea667ab0022"
 }

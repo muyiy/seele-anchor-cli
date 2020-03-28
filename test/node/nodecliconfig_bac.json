@@ -1,0 +1,11 @@
+{
+  "main-conf": [
+    "node.json"
+  ],
+  "main-info": [],
+  "stem-conf": [
+    "nodesub1.json",
+    "nodesub2.json"
+  ],
+  "stem-info": []
+}

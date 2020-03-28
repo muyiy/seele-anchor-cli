@@ -1,6 +1,43 @@
+
+// const fs = require('fs-extra');
+// const seele = require('seele-sdk-javascript')
 const fs = require('fs-extra');
 const path = require('path');
-const seele = require('seele-sdk-javascript')
+const home = require('os').homedir();
+const root = '.subchain'
+const rootdir = path.join(home, root)
+const settings = {
+  focus: 'subchainFocus',
+  file: 'ancconf.json'
+}
+const store = require('data-store')({ path: path.join(rootdir, settings.file) });
+
+async function _run(str){
+  return new Promise(function(resolve, reject) {
+    const CliTest = require('command-line-test');
+    const cliTest = new CliTest();
+    cliTest.exec(str)
+    .then((d)=>{resolve(d)})
+    .catch((e)=>{reject(e)})
+  });
+}
+
+async function viewKeep(){
+  // var result = await _run("")
+  console.log(result);
+}
+
+async function killKeep(){
+
+}
+
+async function cronKeep(){
+
+}
+
+async function updateAddressbook(){
+
+}
 
 /**
  * conf - description
@@ -10,41 +47,86 @@ const seele = require('seele-sdk-javascript')
  * @param  {string} pro project name
  * @return {type}     description
  */
-async function conf(cwd, dir, pro) {
-  const src = path.join(__dirname, 'rsc');
-  const dst = path.join(cwd, dir, pro, 'src');
+async function conf(pro, overwrite) {
+  try {
+    // overwrite
+    const fs = require('fs-extra');
+    const prodir = path.join(home, root, pro)
+    if (overwrite) await fs.remove(prodir);
 
-  await fs.remove(dst);
-  await fs.copy(src, dst, {overwrite: true});
+    // create directory and files
+    const init = require('seele-contract-core').init;
+    await init(home, root, pro)
 
-  const fig = path.join(cwd, dir, pro, 'conf.json');
-  const obj = await fs.readJson(fig, {throws: false});
-  obj.subchain = {'node': 'http://localhost:8035'};
-  // obj.
-  obj.constructors = {
-    'StemRootchain.sol':[
-      [
-  			{ "name": "_subchainName", "type": "bytes32" },
-  			{ "name": "_genesisInfo", "type": "bytes32[]" },
-  			{ "name": "_staticNodes", "type": "bytes32[]" },
-  			{ "name": "_creatorDeposit", "type": "uint256" },
-  			{ "name": "_ops", "type": "address[]" },
-  			{ "name": "_opsDeposits", "type": "uint256[]" },
-  			{ "name": "_refundAccounts", "type": "address[]" }
-  		],
-      [
-        "",
-        [],
-        [],
-        "",
-        [],
-        [],
-        [],
-      ],
-      1000
-    ]
+    // copy solidiy source codes
+    const srcsol = path.join(__dirname, 'sol');
+    const dstsol = path.join(rootdir, pro, 'src')
+    await fs.remove(dstsol);
+    await fs.copy(srcsol, dstsol, {overwrite: true});
+
+    // copy working configuration file
+    const srccon = path.join(__dirname, 'json', 'conf.json')
+    const dstcon = path.join(rootdir, pro, 'conf.json')
+    await fs.remove(dstcon);
+    await fs.copy(srccon, dstcon, {overwrite: true});
+
+    // focus on project
+    await store.set(settings.focus, pro)
+  } catch (e) {
+    console.error(e);
+  } finally {
+    // console.log('Initiated');
   }
-  await fs.writeJson(fig, obj, {spaces: 2, EOL: '\n'});
+}
+
+/**
+ * list - remove, change before always showing the focused subchain
+ *
+ * @param  {type} remove description
+ * @param  {type} change description
+ * @returns {type}        description
+ */
+async function list(remove, change, loud){
+  var projects = await fs.readdir(rootdir).then(d=>{
+    return d.filter(function(e) { return e !== settings.file })
+  })
+  projects = projects.filter(function(e) { return e !== "node" })
+
+  if ( projects.includes(change) ) {
+    await store.set(settings.focus, change)
+  } else if( change==undefined ) {
+  } else {
+    console.log('unrecognized switch:', change);
+  }
+
+  if ( projects.includes(remove) && remove == store.get(settings.focus) && projects.length>=1) {
+    await fs.remove(path.join(rootdir, remove))
+    projects = projects.filter(function(e) { return e !== remove })
+    var foo
+    projects.length==0?foo="":foo=projects[0]
+    await store.set(settings.focus, foo)
+  } else if( remove==undefined ) {
+  } else {
+    console.log('unrecognized remove:', remove);
+  }
+
+
+  const term = require( 'terminal-kit' ).terminal;
+  const focus = store.get(settings.focus)
+  // console.log(projects);
+  //
+  if (loud==true) {
+    for ( var project of projects ) {
+      if ( project == focus ) {
+        term.green('\t- '+project).green(' • \n')
+      } else {
+        term('\t- '+project+'\n')
+      }
+    }
+  }
+
+  // console.log(focus);
+  return path.join(rootdir,focus)
 }
 
 /**
@@ -53,7 +135,10 @@ async function conf(cwd, dir, pro) {
  * @param  {type} pro description
  * @returns {type}     description
  */
-async function getConf(pro) {
+async function getConf() {
+  const list = require('./conf').list
+  const pro = await list(null,null,false)
+  const fs = require('fs-extra');
   const confpath = path.join(pro, 'conf.json');
   const obj = await fs.readJson(confpath, {throws: true});
   return obj;
@@ -68,7 +153,8 @@ async function getConf(pro) {
  */
 async function setConf(pro,obj){
   const fig = path.join(pro, 'conf.json')
-  await fs.writeJson(fig, obj, {spaces: 2, EOL: '\n'});
+  await fs.writeJson(fig, obj, {spaces: 2, EOL: '\n'})
+  .catch(e=>{console.log(e);});
 }
 
 /**
@@ -77,10 +163,13 @@ async function setConf(pro,obj){
  * @param  {type} pro description
  * @returns {type}     description
  */
-async function getNode(pro){
+async function getNode(pro, shard){
+  const seele = require('seele-sdk-javascript');
   const obj = await getConf(pro)
-  const shard = seele.key.shard(obj.transactions.fromAddress)
-  return obj.shard[shard]
+  var s = seele.key.shard(obj.transactions.fromAddress)
+  var str = shard
+  if (`${str}`.match(/[1-4]/g)){ s = shard }
+  return obj.shard[s]
 }
 
 /**
@@ -132,10 +221,12 @@ async function bftConf(root, pro){
 }
 
 module.exports = {
+  list: list,
   conf: conf,
   getAbi: getAbi,
   getConf: getConf,
   setConf: setConf,
   getNode: getNode,
-  bftConf: bftConf
+  bftConf: bftConf,
+  updateAddressbook: updateAddressbook
 };

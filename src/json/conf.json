@@ -1,0 +1,138 @@
+{
+  "compiler": {
+    "version": "0.4.24"
+  },
+  "shard": {
+    "1": "http://localhost:8037",
+    "2": "http://localhost:8038",
+    "3": "http://localhost:8039",
+    "4": "http://localhost:8036"
+  },
+  "transactions": {
+    "limit": 6000000,
+    "depth": 0,
+    "privateKey": "0x2d66a8700195364ccd30325c277af826f002cdeeeee42d4d9280b97be20c267c",
+    "fromAddress": "0x78aecc406685d89d7a15861f392d24e525b29ac1",
+    "print": true
+  },
+  "addressBook": {
+  },
+  "constructors": {
+    "sub-sle":[
+      "0x0733cf2733c0add322ab6be8b49cedd2cc3daf51",
+      "0xd0df7ee481480c2f73c81f1aa26511259ea5ff31",
+      "0xd18bbf5f4db3278cfc4cd583f573962b80e0be61",
+      "0xba592a768240d68629ffc8a0144aa49da6195411",
+      "0x6134eed95ccdabc4a091791f1928bc2e93a5de81"
+    ],
+    "sub-eth":[
+      "0xF10E2d4832C69fF8994401e9BcfB16e375c68185",
+      "0x1F6C6Df34Be1C4b72D481d5060491284D404e827",
+      "0xBDf0b2CEed80890AA9eCC240Db5854465f732612",
+      "0x4930c371eef034e531bE5d674a8dC1dBf338DCA4",
+      "0x987e3966bd2c22Af53610E2Bab730AE548B4754b"
+    ],
+    "main-same":[
+      "0x0000000000000000000000000000000000000000",
+      "0x0000000000000000000000000000000000000000",
+      "0x78aecc406685d89d7a15861f392d24e525b29ac1",
+      "0x78aecc406685d89d7a15861f392d24e525b29ac1",
+      "0x78aecc406685d89d7a15861f392d24e525b29ac1"
+    ],
+    "main-diff":[
+      "0x0000000000000000000000000000000000000000",
+      "0x0000000000000000000000000000000000000000",
+      "0x6b290ae6b6a8d69feb017d0270fb4ae18c97e6d1",
+      "0x17f90158dca8abdaa4cc15e93d0fc772ed3a5b01",
+      "0xfebede3f9e5e7c1ae4fad996d2c3d7009d5428f1"
+    ],
+    "StemRootchain.sol": [
+      [
+        {
+          "name": "_subchainName",
+          "type": "bytes32"
+        },
+        {
+          "name": "_genesisInfo",
+          "type": "bytes32[]"
+        },
+        {
+          "name": "_staticNodes",
+          "type": "bytes32[]"
+        },
+        {
+          "name": "_creatorDeposit",
+          "type": "uint256"
+        },
+        {
+          "name": "_ops",
+          "type": "address[]"
+        },
+        {
+          "name": "_opsDeposits",
+          "type": "uint256[]"
+        },
+        {
+          "name": "_refundAccounts",
+          "type": "address[]"
+        }
+      ],
+      [
+        "0x416e6e6965",
+        [],
+        [
+          "0x1071052039"
+        ],
+        "1",
+        [
+          "0x0733cf2733c0add322ab6be8b49cedd2cc3daf51",
+          "0xd0df7ee481480c2f73c81f1aa26511259ea5ff31",
+          "0xd18bbf5f4db3278cfc4cd583f573962b80e0be61",
+          "0xba592a768240d68629ffc8a0144aa49da6195411",
+          "0x6134eed95ccdabc4a091791f1928bc2e93a5de81"
+        ],
+        [
+          "0",
+          "0",
+          "100",
+          "100",
+          "100"
+        ],
+        [
+          "0x0000000000000000000000000000000000000000",
+          "0x0000000000000000000000000000000000000000",
+          "0x6b290ae6b6a8d69feb017d0270fb4ae18c97e6d1",
+          "0x17f90158dca8abdaa4cc15e93d0fc772ed3a5b01",
+          "0xfebede3f9e5e7c1ae4fad996d2c3d7009d5428f1"
+        ]
+      ],
+      10000
+    ]
+  },
+  "subchain": {
+    "node": "http://localhost:8031",
+    "depth": 1,
+    "limit": 200000,
+    "self": {
+      "private": "0xd345ed9cdfe3fc27a0382c5dbcaeec17836343a75e00cac37a81660714af8260",
+      "address": "0x55a03a606f8b1b9627c6e988806818fbc4544711",
+      "address-eth": "0xeb11b698F3ee76e65A3315BEF7Aa11eBB6536827"
+    },
+    "mint": {
+      "private": "0x41dc1a0536dd99ede868ce83e6a95e4c36b44f7f3fdf8e8b9cfb63c8c7278648",
+      "address": "0xfcfe238fbd6e0ddd64f05aae86f2cf4c866a2511",
+      "address-eth": "0x7648753e4DB6C0386CBC66Fd3c230cb2189F0AfD"
+    },
+    "melt": {
+      "private": "0x9c7cb0cd361280eaf1c789cb96a9be3cce7416b02c31d1ac954236abc78fece5",
+      "address": "0x08ab83758f29ffb3d8736f57cc8902953cbe7601",
+      "address-eth": "0xdea98742c58857FB06eDf378B46B3cb00De0Fcb3"
+    },
+    "roll": {
+      "private": "0x3a7caed96d637652ec54bf7747e143ff01ae1d5451dbea0dae3f8dcf143e4e6c",
+      "address": "0xde377142da5aa2b424ed428110461b2617f82311",
+      "address-eth":
+      "0xAbD2ACA0c0dcf968CDadb4fA173f39E49D58734D"
+    }
+  }
+}

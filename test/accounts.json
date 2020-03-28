@@ -1,0 +1,157 @@
+{
+  "self": {
+    "subchain": {
+      "shard": 1,
+      "address_sle": "0x70c389651190266e8f6813680ecb0c42a74fd831",
+      "address_eth": "0x00D9DBe8193f3f8573A65F50FbB8A5324649AF86",
+      "private": "0x23d78171601fd57736b3db9a609313200a3f0dd9db333b4349847a552a4dddc6"
+    },
+    "mainchain": {
+      "shard": 1,
+      "address_sle": "0x78aecc406685d89d7a15861f392d24e525b29ac1",
+      "address_eth": "0xd2355e58dfb2E6598d5F41B7a2120ded16Ef49D0",
+      "private": "0x2d66a8700195364ccd30325c277af826f002cdeeeee42d4d9280b97be20c267c"
+    }
+  },
+  "mint": {
+    "subchain": {
+      "shard": 1,
+      "address_sle": "0x0733cf2733c0add322ab6be8b49cedd2cc3daf51",
+      "address_eth": "0xF10E2d4832C69fF8994401e9BcfB16e375c68185",
+      "private": "0x04440f11b93159103f44ce20c16fa1db77f636d14565489c55de802b34f0316e"
+    },
+    "mainchain": {
+      "shard": 1,
+      "address_sle": "0xf17f8716cdf30be970adca1bc05b116c2ae70081",
+      "address_eth": "0x5a591a637993B818d8882f51F0904c676E813d84",
+      "private": "0x9542626dfe5bb0b5b96f75029d4a1436de98bedfa3e5818194461e6dcac586b7"
+    }
+  },
+  "melt": {
+    "subchain": {
+      "shard": 1,
+      "address_sle": "0xd0df7ee481480c2f73c81f1aa26511259ea5ff31",
+      "address_eth": "0x1F6C6Df34Be1C4b72D481d5060491284D404e827",
+      "private": "0x207c2cdd9b38615bba33317f59fb181897aa9036e394a62d7b59c7c72d66c29d"
+    },
+    "mainchain": {
+      "shard": 1,
+      "address_sle": "0xb63da7045e3c95ac764cc68dd96350df99fe0ac1",
+      "address_eth": "0xbB6c7F3B680A302F14d7B6EC6623b663953F6C99",
+      "private": "0x9f8e9c7a5d444b65a29dd11be88cfa2a2d8043a59e64df44bb108f14bd40b64f"
+    }
+  },
+  "roll": {
+    "subchain": {
+      "shard": 1,
+      "address_sle": "0xada246f9ba430e60b3241cc9d938c33b9813fad1",
+      "address_eth": "0xde4a1c44c310Bfd14ad97aea18497942D8EA1031",
+      "private": "0xd4b2ab8ba394e31505ae385020acbfcbca1d949635e6af6deca0732a44619647"
+    },
+    "mainchain": {
+      "shard": 1,
+      "address_sle": "0xee1d2b4718acfb7bbd1d57694eb7b1d6767d9dc1",
+      "address_eth": "0xE41bB61237Df85Ba7B409373D1DE620d8CFf7458",
+      "private": "0x4d2125825024c00ff8b36c6bdc0fa71b796368c461514e99e616b04807e71564"
+    }
+  },
+  "user": [{
+      "subchain": {
+        "shard": 1,
+        "address_sle": "0xd18bbf5f4db3278cfc4cd583f573962b80e0be61",
+        "address_eth": "0xBDf0b2CEed80890AA9eCC240Db5854465f732612",
+        "private": "0xf4f5a8f953cc0bdb8bb5ef9268fc812ee248653ebe01dd304778c8c8b8adc58d"
+      },
+      "mainchain": {
+        "shard": 1,
+        "address_sle": "0x6b290ae6b6a8d69feb017d0270fb4ae18c97e6d1",
+        "address_eth": "0x8f77d45d3b1aDd5ecbB3495567E89F106d8a63A3",
+        "private": "0x0d9842ed3cd2d6927d8915f2baaf79b8287da452fe7c978bbc72c1717be80258"
+      }
+    },
+    {
+      "subchain": {
+        "shard": 1,
+        "address_sle": "0xba592a768240d68629ffc8a0144aa49da6195411",
+        "address_eth": "0x4930c371eef034e531bE5d674a8dC1dBf338DCA4",
+        "private": "0xbd69a0acb0128a50921b32670581c5020a56559634db1c5adc9d8636326e7128"
+      },
+      "mainchain": {
+        "shard": 1,
+        "address_sle": "0x17f90158dca8abdaa4cc15e93d0fc772ed3a5b01",
+        "address_eth": "0x1Ec2115dBeFcCd0fe201FB13a3FE88823ADECb5C",
+        "private": "0xcf94f603efaae5c3371110393fccad0b4ea1ff104f597882ac54fe83771e4f55"
+      }
+    },
+    {
+      "subchain": {
+        "shard": 1,
+        "address_sle": "0x6134eed95ccdabc4a091791f1928bc2e93a5de81",
+        "address_eth": "0x987e3966bd2c22Af53610E2Bab730AE548B4754b",
+        "private": "0x2490de5dbf09e743830a1140f459ec370a9ccf2862d23efcf57bf578de38453f"
+      },
+      "mainchain": {
+        "shard": 1,
+        "address_sle": "0xfebede3f9e5e7c1ae4fad996d2c3d7009d5428f1",
+        "address_eth": "0xff396Ca60d374E57966D19Fc8b2eF9D440128451",
+        "private": "0x640c686b1bb74800611163744ffe4f915bca4e9d3a146df155ddca42142f6892"
+      }
+    },
+    {
+      "subchain": {
+        "shard": 1,
+        "address_sle": "0xf1d7ce81143db06d1ca99253894acfb0fd093791",
+        "address_eth": "0xFc373254Ee4D9cd685bE13fdE6AABcd2434f5CE4",
+        "private": "0x4bb7b3932594ec362645b9b672c3788c15e36a22e5ab467b3f8c4f5924a0c58b"
+      },
+      "mainchain": {
+        "shard": 1,
+        "address_sle": "0x207b85e126dd21dcb92089d9be24292192067bc1",
+        "address_eth": "0x390aFa7473aDD9D7eeAf3219BE0648A7104eA2df",
+        "private": "0xeefa21fa7e173b8f0094881d224e0776def068749df2bd163406871cb77a1829"
+      }
+    },
+    {
+      "subchain": {
+        "shard": 1,
+        "address_sle": "0x877c69ae1b54d9bca97ec21027609597a969ce81",
+        "address_eth": "0x35f56e8e97266416CB61D1bdf368245f06C223C5",
+        "private": "0x216aef389a6ecec89ec1d43b8277f5d593d30bb5d54927238288924f42555782"
+      },
+      "mainchain": {
+        "shard": 1,
+        "address_sle": "0x034e1b4294b629184775f0702d6b1b283def1241",
+        "address_eth": "0xD41D212C1d963D7A36400BfF340EB229b954930f",
+        "private": "0x16c2464e1f270f376881d70dd96614c046d09f035b2b95c0b424fa8987e7819f"
+      }
+    },
+    {
+      "subchain": {
+        "shard": 1,
+        "address_sle": "0xe0ae8515f79da40235302b4fc920b82173ad0e11",
+        "address_eth": "0x7f1B82926D704F1a586C121e64408b34fC716A5b",
+        "private": "0x338aa1c15cf7980e521b656a46df1032f88a8a7b36f4d706b9920aa1a2efa46a"
+      },
+      "mainchain": {
+        "shard": 1,
+        "address_sle": "0xd1a00f6409900c38bd32d48f5e4ec07d4d3f2981",
+        "address_eth": "0x7ea5227a2a84A48edcBFbB74D4556a4fd7ba4b61",
+        "private": "0x72f7c868411b6dec002dcb77847158dc60085e36fdbc309ef85d782daba67f31"
+      }
+    },
+    {
+      "subchain": {
+        "shard": 1,
+        "address_sle": "0x246316e1fa7a15f07bc2ac73ea4db17017959851",
+        "address_eth": "0xCAA3DCf69c64806501CF51481A0101bD4C09de61",
+        "private": "0x35e4e289c8c510332ec985e7344b8cb28d3056efb511a0b82968b62aa637482f"
+      },
+      "mainchain": {
+        "shard": 1,
+        "address_sle": "0x0f67339894f7c270a06c6ef401fb6e11aaced691",
+        "address_eth": "0x5186919eE26781A8c5b04233260BC6f042d2772e",
+        "private": "0xd427a2bf128bf47165d32ea00a72617a3001649ac94cd685fe21526b2398fcef"
+      }
+    }
+  ]
+}
