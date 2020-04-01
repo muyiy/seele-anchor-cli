@@ -4,12 +4,12 @@
     "version": "1.0",
     "dataDir": "sub_3",
     "address": "0.0.0.0:8023",
-    "coinbase": "0x70c389651190266e8f6813680ecb0c42a74fd831",
-    "privateKey": "0x23d78171601fd57736b3db9a609313200a3f0dd9db333b4349847a552a4dddc6",
+    "coinbase": "0x6134eed95ccdabc4a091791f1928bc2e93a5de81",
+    "privateKey": "0x2490de5dbf09e743830a1140f459ec370a9ccf2862d23efcf57bf578de38453f",
     "algorithm": "bft_subchain"
   },
   "p2p": {
-    "privateKey": "0x5652bca119ebffa9d6d48ce9c4bd002de61ffaf090da8b80890a7cd598d3ef9c",
+    "privateKey": "0x2490de5dbf09e743830a1140f459ec370a9ccf2862d23efcf57bf578de384531",
     "staticNodes": [
       "127.0.0.1:8051",
       "127.0.0.1:8052"
@@ -55,9 +55,11 @@
       "0xd0df7ee481480c2f73c81f1aa26511259ea5ff31",
       "0xada246f9ba430e60b3241cc9d938c33b9813fad1"
     ],
-    "supply": 1000000,
+    "supply": 1750000000000,
     "validators":[
-      "0x70c389651190266e8f6813680ecb0c42a74fd831"
+      "0xd18bbf5f4db3278cfc4cd583f573962b80e0be61",
+      "0xba592a768240d68629ffc8a0144aa49da6195411",
+      "0x6134eed95ccdabc4a091791f1928bc2e93a5de81"
     ]
   }
 }

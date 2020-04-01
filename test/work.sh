@@ -9,33 +9,29 @@ anc keep
 snc kill
 
 # _________________________________
-# 
-##########################
 # Fill main Accounts
+#
+##########################
 # snc start -m;
-# self_main_pri=$(cat test/accounts.json | jq -r '.self.mainchain.private');
-# use0_main_pub=$(cat test/accounts.json | jq -r '.user[0].mainchain.address_sle');
-# use1_main_pub=$(cat test/accounts.json | jq -r '.user[1].mainchain.address_sle');
-# use2_main_pub=$(cat test/accounts.json | jq -r '.user[2].mainchain.address_sle');
-# use3_main_pub=$(cat test/accounts.json | jq -r '.user[3].mainchain.address_sle');
-# use4_main_pub=$(cat test/accounts.json | jq -r '.user[4].mainchain.address_sle');
-# use5_main_pub=$(cat test/accounts.json | jq -r '.user[5].mainchain.address_sle');
-# anc adtx -f $self_main_pri -t $use0_main_pub -a 600000000;
-# anc adtx -f $self_main_pri -t $use1_main_pub -a 600000000;
-# anc adtx -f $self_main_pri -t $use2_main_pub -a 600000000;
-# anc adtx -f $self_main_pri -t $use3_main_pub -a 600000000;
-# anc adtx -f $self_main_pri -t $use4_main_pub -a 600000000;
-# anc adtx -f $self_main_pri -t $use5_main_pub -a 600000000;
-# anc main account -a $use0_main_pub
-# anc main account -a $use1_main_pub
-# anc main account -a $use2_main_pub
-# anc main account -a $use3_main_pub
-# anc main account -a $use4_main_pub
-# anc main account -a $use5_main_pub
-
-
-
-
+self_main_pri=$(cat test/accounts.json | jq -r '.self.mainchain.private');
+use0_main_pub=$(cat test/accounts.json | jq -r '.user[0].mainchain.address_sle');
+use1_main_pub=$(cat test/accounts.json | jq -r '.user[1].mainchain.address_sle');
+use2_main_pub=$(cat test/accounts.json | jq -r '.user[2].mainchain.address_sle');
+use3_main_pub=$(cat test/accounts.json | jq -r '.user[3].mainchain.address_sle');
+use4_main_pub=$(cat test/accounts.json | jq -r '.user[4].mainchain.address_sle');
+use5_main_pub=$(cat test/accounts.json | jq -r '.user[5].mainchain.address_sle');
+anc adtx -f $self_main_pri -t $use0_main_pub -a 600000000;
+anc adtx -f $self_main_pri -t $use1_main_pub -a 600000000;
+anc adtx -f $self_main_pri -t $use2_main_pub -a 600000000;
+anc adtx -f $self_main_pri -t $use3_main_pub -a 600000000;
+anc adtx -f $self_main_pri -t $use4_main_pub -a 600000000;
+anc adtx -f $self_main_pri -t $use5_main_pub -a 600000000;
+anc main account -a $use0_main_pub
+anc main account -a $use1_main_pub
+anc main account -a $use2_main_pub
+anc main account -a $use3_main_pub
+anc main account -a $use4_main_pub
+anc main account -a $use5_main_pub
 
 
 ##########################

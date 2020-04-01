@@ -360,18 +360,21 @@ async function keep(root) {
     var d = await Promise.all([
       stmrpc.getBalanceTreeRoot(next),
       stmrpc.getTxTreeRoot(next),
-      stmrpc.getUpdatedAccountInfo(next)
+      stmrpc.getUpdatedAccountInfo(next),
+      stmrpc.getFee(next)
     ])
     if (d[0].error == undefined &&
       d[1].error == undefined &&
-      d[2].error == undefined) {
+      d[2].error == undefined &&
+      d[3].error == undefined) {
       var balances = RLP.decode(Buffer.from(d[2]["balances"], "base64")).map((buf) => {
         return parseInt("0x" + buf.toString("hex"))
       })
       var accounts = RLP.decode(Buffer.from(d[2]["updated accounts"], "base64")).map((buf) => {
         return "0x" + buf.toString("hex")
       })
-      const code = stm.submitBlock(next, d[0], d[1], accounts, balances, 0)
+      var fee = Number.parseInt(d[3]["fee"])
+      const code = stm.submitBlock(next, d[0], d[1], accounts, balances, fee)
       console.log(code.byteCode);
       // const result = await employ(pro, 1, code.byteCode, null);
       // console.log(result);
