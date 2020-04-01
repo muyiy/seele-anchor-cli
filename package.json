@@ -5,6 +5,7 @@
   "main": "cli.js",
   "scripts": {
     "testb": "bash test/flow.sh",
+    "save": "./scripts/up",
     "test": "./node_modules/.bin/mocha",
     "bash": "bash ./test/scriptTest.sh",
     "lint": "./node_modules/.bin/eslint -c .eslintrc.json --fix",
@@ -18,14 +19,17 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "data-store": "^4.0.3",
-    "node-cron": "^2.0.3",
+  "local-dependencies": {
     "seele-contract-core": "file:../seele-contract-core",
     "seele-sdk-javascript": "file:../seele-sdk-javascript",
     "seele-stemsdk-javascript": "file:../seele-stemsdk-javascript",
-    "terminal-kit": "^1.35.2",
-    "yargs": "^15.3.1"
+    "terminal-kit": "^1.35.2"
+  },
+  "dependencies": {
+    "node-cron": "^2.0.3",
+    "data-store": "^4.0.3",
+    "seele-contract-core": "^1.0.6",
+    "seele-stemsdk-javascript": "^1.0.1"
   },
   "devDependencies": {
     "command-line-test": "^1.0.10",

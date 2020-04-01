@@ -21,7 +21,7 @@ async function allAccounts(root, pro){
     var bal = await call(pro, sub.getOperatorBalance(opr))
     arr[opr] = bal['0']
   }
-  console.log(arr);
+  return arr
 }
 
 async function exitAccounts(root, pro){

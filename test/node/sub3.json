@@ -1,0 +1,63 @@
+{
+  "basic":{
+    "name": "seele sub3",
+    "version": "1.0",
+    "dataDir": "sub_3",
+    "address": "0.0.0.0:8023",
+    "coinbase": "0x70c389651190266e8f6813680ecb0c42a74fd831",
+    "privateKey": "0x23d78171601fd57736b3db9a609313200a3f0dd9db333b4349847a552a4dddc6",
+    "algorithm": "bft_subchain"
+  },
+  "p2p": {
+    "privateKey": "0x5652bca119ebffa9d6d48ce9c4bd002de61ffaf090da8b80890a7cd598d3ef9c",
+    "staticNodes": [
+      "127.0.0.1:8051",
+      "127.0.0.1:8052"
+    ],
+    "address": "0.0.0.0:8053",
+    "networkID": "seele_sub"
+  },
+  "log": {
+    "isDebug":  false,
+    "printLog": false
+  },
+  "httpServer": {
+    "address": "0.0.0.0:8033",
+    "crossorigins": [
+      "*"
+    ],
+    "whiteHost": [
+      "*"
+    ]
+  },
+  "wsserver": {
+    "address": "0.0.0.0:8043",
+    "crossorigins": [
+      "*"
+    ]
+  },
+  "ipcconfig": {
+    "name": "sub3.ipc"
+  },
+  "metrics": {
+    "address": "0.0.0.0:8083",
+    "duration": 10,
+    "database": "influxdb",
+    "username": "test",
+    "password": "test123"
+  },
+  "genesis": {
+    "difficult":1,
+    "shard":1,
+    "timestamp":1554099618,
+    "rootaccounts": [
+      "0x0733cf2733c0add322ab6be8b49cedd2cc3daf51",
+      "0xd0df7ee481480c2f73c81f1aa26511259ea5ff31",
+      "0xada246f9ba430e60b3241cc9d938c33b9813fad1"
+    ],
+    "supply": 1000000,
+    "validators":[
+      "0x70c389651190266e8f6813680ecb0c42a74fd831"
+    ]
+  }
+}

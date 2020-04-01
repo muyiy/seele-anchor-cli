@@ -26,5 +26,5 @@ anc -h # --help: Show help
 
 # Resource
 
-- [User guide](./doc/md-tutorials/0-user.md)
-- [Developer guide](./doc/md-tutorials/1-test.md)
+- [User guide](https://seeletech.gitbook.io/wiki/developer/subchain/seele-anchor-cli/0-user)
+- [Developer guide](https://seeletech.gitbook.io/wiki/developer/subchain/seele-anchor-cli/1-test)

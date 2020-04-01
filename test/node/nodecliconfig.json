@@ -4,7 +4,9 @@
   ],
   "main-info": [],
   "stem-conf": [
-    "nodesub1.json"
+    "sub1.json",
+    "sub2.json",
+    "sub3.json"
   ],
   "stem-info": []
 }

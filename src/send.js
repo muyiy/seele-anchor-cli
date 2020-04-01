@@ -22,8 +22,11 @@ async function send(arg){
       const stem = new stm.rpc(node)
       const initTx = stm.signature.initTxn(from, arg.t, arg.a)
       initTx.Type = arg.o
-      initTx.limit = conf.subchain.limit
+      initTx.GasLimit = conf.subchain.limit
       initTx.AccountNonce = await determinenonce(arg.n, from, node)
+      if ( initTx.AccountNonce == 0 ) {
+        initTx.AccountNonce = 1
+      }
       const signTx = stm.signature.signTxn(priv, initTx, arg.h)
       console.log(signTx);
       if (arg.stop) {

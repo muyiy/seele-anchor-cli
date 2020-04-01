@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
+# _________________________________
+# Upon first deploying the contract
+# use keep to add balance to initial verifiers
+##########################
+snc start
+anc keep
+snc kill
 
-# echo $self_main_pri
-
-
+# _________________________________
+# 
 ##########################
 # Fill main Accounts
 # snc start -m;
@@ -27,30 +33,35 @@
 # anc main account -a $use4_main_pub
 # anc main account -a $use5_main_pub
 
+
+
+
+
+
 ##########################
 # Trading in and out
-snc start -m;
-self_stem_pub=$(cat test/accounts.json | jq -r '.self.subchain.address_sle');
-self_main_pri=$(cat test/accounts.json | jq -r '.self.mainchain.private');
-self_main_pub=$(cat test/accounts.json | jq -r '.self.mainchain.address_sle');
-use3_main_pub=$(cat test/accounts.json | jq -r '.user[3].mainchain.address_sle');
-use4_main_pub=$(cat test/accounts.json | jq -r '.user[4].mainchain.address_sle');
-use3_main_pri=$(cat test/accounts.json | jq -r '.user[3].mainchain.private');
-use4_main_pri=$(cat test/accounts.json | jq -r '.user[4].mainchain.private');
-use0_main_pri=$(cat test/accounts.json | jq -r '.user[0].mainchain.private');
-use3_stem_pub=$(cat test/accounts.json | jq -r '.user[3].subchain.address_sle');
-use4_stem_pub=$(cat test/accounts.json | jq -r '.user[4].subchain.address_sle');
-use0_stem_pub=$(cat test/accounts.json | jq -r '.user[0].subchain.address_sle');
-use0_main_pub=$(cat test/accounts.json | jq -r '.user[0].mainchain.address_sle');
-use1_main_pri=$(cat test/accounts.json | jq -r '.user[1].mainchain.private');
-use1_stem_pub=$(cat test/accounts.json | jq -r '.user[1].subchain.address_sle');
-anc main account -a $use3_main_pub
-anc main account -a $use4_main_pub
-anc main account -a $self_main_pub
+# snc start -m;
+# self_stem_pub=$(cat test/accounts.json | jq -r '.self.subchain.address_sle');
+# self_main_pri=$(cat test/accounts.json | jq -r '.self.mainchain.private');
+# self_main_pub=$(cat test/accounts.json | jq -r '.self.mainchain.address_sle');
+# use3_main_pub=$(cat test/accounts.json | jq -r '.user[3].mainchain.address_sle');
+# use4_main_pub=$(cat test/accounts.json | jq -r '.user[4].mainchain.address_sle');
+# use3_main_pri=$(cat test/accounts.json | jq -r '.user[3].mainchain.private');
+# use4_main_pri=$(cat test/accounts.json | jq -r '.user[4].mainchain.private');
+# use0_main_pri=$(cat test/accounts.json | jq -r '.user[0].mainchain.private');
+# use3_stem_pub=$(cat test/accounts.json | jq -r '.user[3].subchain.address_sle');
+# use4_stem_pub=$(cat test/accounts.json | jq -r '.user[4].subchain.address_sle');
+# use0_stem_pub=$(cat test/accounts.json | jq -r '.user[0].subchain.address_sle');
+# use0_main_pub=$(cat test/accounts.json | jq -r '.user[0].mainchain.address_sle');
+# use1_main_pri=$(cat test/accounts.json | jq -r '.user[1].mainchain.private');
+# use1_stem_pub=$(cat test/accounts.json | jq -r '.user[1].subchain.address_sle');
+# anc main account -a $use3_main_pub
+# anc main account -a $use4_main_pub
+# anc main account -a $self_main_pub
 # anc trade in -o true -a 99 -p $use3_main_pri -s $use3_stem_pub
 # anc trade in -o false -a 89 -p $use4_main_pri -s $use4_stem_pub
-anc trade out -o true -p $self_main_pri -s $use0_stem_pub
-anc show
+# anc trade out -o true -p $self_main_pri -s $use0_stem_pub
+# anc show
 
 
 ##########################
@@ -75,7 +86,7 @@ anc show
 
 ##########################
 # Relay
-snc start
+# snc start
 # anc keep
 
 ##########################
@@ -84,4 +95,4 @@ snc start
 
 ##########################
 # Done
-snc kill
+# snc kill

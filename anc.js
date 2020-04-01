@@ -287,7 +287,8 @@ const anc = yargs
             const cwd = list(null, null)
 
             if (argv.list) {
-              call.allAccounts(__dirname, cwd)
+              const acc = await call.allAccounts(__dirname, cwd)
+              console.log(acc);
             }
 
             if (argv.a == undefined) {
@@ -323,6 +324,9 @@ const anc = yargs
             console.log(info);
           }
         )
+        .command('summary', 'Node summary', {
+          
+        })
     },
     (argv) => {}
   )
@@ -453,11 +457,17 @@ const anc = yargs
           type: 'number',
           default: undefined
         })
+        .option('stop', {
+          alias: 's',
+          type: 'boolean',
+          default: false
+        })
     },
     async (argv) => {
       const {
         send
       } = require('./src/send')
+      console.log('run?');
       send(argv)
       // send(conf.subchain.self.private, argv.t, argv.a, true, conf.subchain.node);
     },

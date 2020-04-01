@@ -1,7 +1,9 @@
-const stem = require("seele-stemsdk-javascript")
+const stm = require("seele-stemsdk-javascript")
+const term = require( 'terminal-kit' ).terminal;
 const {
   getConf,
-  getNode
+  getNode,
+  list
 } = require('./conf');
 
 async function accountInfo(acc){
@@ -29,6 +31,18 @@ async function accountInfo(acc){
   });
 }
 
+async function nodeSummary(){
+  const pro = await list(null,null)
+  const cnf = await getConf(pro);
+  const node = cnf.subchain.node;
+  const stem = new stm.rpc(node);
+  Promise.all([
+    stem.
+  ])
+  .then(d=>{
+    console.log(d);
+  })
+}
 
 module.exports = {
   accountInfo: accountInfo

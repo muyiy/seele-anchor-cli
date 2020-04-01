@@ -55,7 +55,8 @@
       "private": "0x4d2125825024c00ff8b36c6bdc0fa71b796368c461514e99e616b04807e71564"
     }
   },
-  "user": [{
+  "user": [
+    {
       "subchain": {
         "shard": 1,
         "address_sle": "0xd18bbf5f4db3278cfc4cd583f573962b80e0be61",
