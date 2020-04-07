@@ -1,6 +1,8 @@
 scripts
 doc
 test
+utl
+.eslintrc.json
 .*.swp
 ._*
 .DS_Store
@@ -10,6 +12,8 @@ test
 .lock-wscript
 .svn
 .wafpickle-*
+.subchain
 config.gypi
 CVS
 npm-debug.log
+readme.md

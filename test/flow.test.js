@@ -28,7 +28,7 @@ function quotify(str){
   return quoted
 }
 
-describe('Starting a Project', function() {
+describe.skip('Starting a Project', function() {
   it.skip('----snc start main----, start main chain', async function() {
     await run('snc kill')
     await run('snc start -m')
